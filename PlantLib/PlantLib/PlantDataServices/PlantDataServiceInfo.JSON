@@ -1,0 +1,42 @@
+﻿[
+  {
+    "Name": "Rizziconi",
+    "PlantID": 1,
+    "HumidityID": 13173,
+    "PressureID": 13176,
+    "TemperatureID": 13178,
+    "PcsID": 9706,
+    "FisGasPrincipalID": 13316,
+    "FisGasReserveID": 13314,
+    "Units": [
+      {
+        "UnitID": 1,
+        "CeweID": 13312
+      },
+      {
+        "UnitID": 2,
+        "CeweID": 13312
+      }
+    ]
+  },
+  {
+    "Name": "Calenia",
+    "PlantID": 1,
+    "HumidityID": 13173,
+    "PressureID": 13176,
+    "TemperatureID": 13178,
+    "PcsID": 9706,
+    "FisGasPrincipalID": 13316,
+    "FisGasReserveID": 13314,
+    "Units": [
+      {
+        "UnitID": 1,
+        "CeweID": 13312
+      },
+      {
+        "UnitID": 2,
+        "CeweID": 13312
+      }
+    ]
+  }
+]
