@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlantLib.Model
 {
-    public class UnitStatus
+    class PlantStatus
     {
-        
     }
 }

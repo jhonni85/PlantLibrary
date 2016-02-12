@@ -1,4 +1,5 @@
-﻿using PlantLib.PlantDataServices;
+﻿using Oracle.ManagedDataAccess.Client;
+using PlantLib.PlantDataServices;
 using SimpleInjector;
 using System;
 using System.Collections.Generic;
@@ -27,9 +28,14 @@ namespace PlantLibTest
 
             var rep = container.GetInstance<IPlantRepository>();
 
-            rep.GetCewe(PlantLib.Model.Plants.Calenia, 1);
+          //  rep.GetCewe(PlantLib.Model.Plants.Calenia, 1);
+            OracleConnection con = new OracleConnection();
+            con.ConnectionString= "User Id = XDMMERCATIReader; Password = colos37seo; Data Source = XDMMERCATI";
+            con.Open();
 
- 
+            con.Close();
+            con.Dispose();
+
         }
     }
 }

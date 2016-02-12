@@ -37,10 +37,9 @@ namespace PlantLib.PlantDataServices
         {
             return _plantInfo.Where(x => x.Name == Plant).Single();
         }
-        public IEnumerable<TimeSerie> GetCewe(Plants Plant, int Unit)
-        {
-            var info = GetConfig(Plant).Units.Where(x => x.UnitID == Unit).Single();
 
+        private IEnumerable<TimeSerie>  _getProfile(int ProfileID)
+        {
             using (var connection = new SqlConnection(_config.SqlConnectionString))
             {
                 connection.Open();
@@ -56,13 +55,36 @@ namespace PlantLib.PlantDataServices
 					group by profile_date,ora
                     ORDER BY D,H ";
 
-                IEnumerable<TimeSerie> res = connection.Query<TimeSerie>(query, new { profileID = info.CeweID });
+                IEnumerable<TimeSerie> res = connection.Query<TimeSerie>(query, new { profileID = ProfileID });
                 return res;
             }
 
         }
+        public IEnumerable<TimeSerie> GetCewe(Plants Plant, int Unit)
+        {
+            var info = GetConfig(Plant).Units.Where(x => x.UnitID == Unit).Single();
 
-      
+            return _getProfile(info.CeweID);
+
+        }
+
+        public IEnumerable<TimeSerie> GetTemperature(Plants Plant)
+        {
+            var info = GetConfig(Plant);
+            return _getProfile(info.TemperatureID);
+        }
+
+        public IEnumerable<TimeSerie> GetPressure(Plants Plant)
+        {
+            var info = GetConfig(Plant);
+            return _getProfile(info.PressureID);
+        }
+
+        public IEnumerable<TimeSerie> GetHumdity(Plants Plant)
+        {
+            var info = GetConfig(Plant);
+            return _getProfile(info.HumidityID);
+        }
     }
        
 }

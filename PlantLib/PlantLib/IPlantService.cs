@@ -9,7 +9,6 @@ namespace PlantLib
 {
     public interface IPlantService
     {
-
         bool IsRampa(Unit u, DateTime date);
 
     }

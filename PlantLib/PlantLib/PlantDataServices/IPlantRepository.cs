@@ -11,6 +11,9 @@ namespace PlantLib.PlantDataServices
     public interface IPlantRepository
     {
         IEnumerable<TimeSerie> GetCewe(Plants Plant, int Unit);
+        IEnumerable<TimeSerie> GetTemperature(Plants Plant);
+        IEnumerable<TimeSerie> GetPressure(Plants Plant);
+        IEnumerable<TimeSerie> GetHumdity(Plants Plant);
         PlantRepositoryStaticInfo GetConfig(Plants Plant);
  
 

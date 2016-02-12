@@ -25,33 +25,10 @@ namespace PlantLib
         public bool IsRampa(Unit u , DateTime date)
         {
             var result = _plantRepo.GetCewe(u.PlantName, u.ModuleNumber);
-
-             
-
             return true;
         }
         
-        private void _rampaDetector(List<TimeSerie> cewe)
-        {
-            var orderedCewe = cewe.OrderBy(x => x.DQ);
-            var zeroCounter = 0;
-            for (int i = 0; i < cewe.Count(); i++)
-            {
-                if (cewe[i].V == 0)
-                {
-                    zeroCounter++;
-                }
-                else
-                {
-                    if(zeroCounter<7)
-                        
-                }
-                
-                
-
-
-            }
-        }
+         
         
      
     }
