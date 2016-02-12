@@ -9,7 +9,10 @@ namespace PlantLib
 {
     public interface IPlantService
     {
-        bool IsRampa(Unit u, DateTime date);
+        Plant GetPlant(Plants plant);
+        bool GetPlantStatus(Unit u);
+
+        bool GetUnitStatus(Unit u);
 
     }
 }

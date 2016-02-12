@@ -9,6 +9,7 @@ namespace PlantLib.PlantDataServices
     public class PlantRepositoryConfig
     {
         public string SqlConnectionString { get; set; }
+        public string OracleConnectionString { get; set; }
         public string JsonPlantStaticInfoPath { get; set; }
     }
 }

@@ -21,8 +21,13 @@ namespace PlantLib.PlantDataServices
     }
     public class PlantUnitDataServiceStaticInfo
     {
-        public int UnitID;
-        public int CeweID;
-        
+        public int UnitID { get; set; }
+        public int CeweID { get; set; }
+        public string XDM_Unit { get; set; }
+        public string XDM_PMCurveType { get; set; }
+        public string XDM_PMinCurveSubType { get; set; }
+        public string XDM_PMaxCurveSubType { get; set; }
+
+
     }
 }

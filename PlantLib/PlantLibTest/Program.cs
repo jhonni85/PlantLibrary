@@ -1,4 +1,6 @@
 ﻿using Oracle.ManagedDataAccess.Client;
+using PlantLib;
+using PlantLib.Model;
 using PlantLib.PlantDataServices;
 using SimpleInjector;
 using System;
@@ -20,21 +22,22 @@ namespace PlantLibTest
             PlantRepositoryConfig connectorCfg = new PlantRepositoryConfig()
             {
                 SqlConnectionString = ConfigurationManager.AppSettings["PFX11Connection"],
+                OracleConnectionString = ConfigurationManager.AppSettings["XDM_MERCATI"],
                 JsonPlantStaticInfoPath = @"C:\workspace\PlantLibrary\PlantLib\PlantLib\PlantDataServices\PlantDataServiceInfo.JSON"
             };
 
             container.RegisterSingleton<PlantRepositoryConfig>(connectorCfg);
             container.RegisterSingleton<IPlantRepository, PlantRepository>();
+ 
+            container.RegisterSingleton<IPlantService, PlantService>();
 
-            var rep = container.GetInstance<IPlantRepository>();
+            var rep = container.GetInstance<IPlantService>();
 
-          //  rep.GetCewe(PlantLib.Model.Plants.Calenia, 1);
-            OracleConnection con = new OracleConnection();
-            con.ConnectionString= "User Id = XDMMERCATIReader; Password = colos37seo; Data Source = XDMMERCATI";
-            con.Open();
 
-            con.Close();
-            con.Dispose();
+            var riz = rep.GetPlant(Plants.Rizziconi);
+
+            var result = rep.GetUnitStatus(riz.Unit1);
+
 
         }
     }

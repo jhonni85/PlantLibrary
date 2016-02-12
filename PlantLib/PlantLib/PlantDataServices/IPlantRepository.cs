@@ -15,7 +15,8 @@ namespace PlantLib.PlantDataServices
         IEnumerable<TimeSerie> GetPressure(Plants Plant);
         IEnumerable<TimeSerie> GetHumdity(Plants Plant);
         PlantRepositoryStaticInfo GetConfig(Plants Plant);
- 
+        IEnumerable<TimeSerie> GetPmax(Plants Plant, int Unit);
+        IEnumerable<TimeSerie> GetPmin(Plants Plant, int Unit);
 
     }
 }

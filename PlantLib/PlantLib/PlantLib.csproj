@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="IPlantService.cs" />
     <Compile Include="Model\Plant.cs" />
+    <Compile Include="Model\PlantHistoricalStatus.cs" />
     <Compile Include="Model\ramp.cs" />
     <Compile Include="Model\UnitStatus.cs" />
     <Compile Include="PlantService.cs" />

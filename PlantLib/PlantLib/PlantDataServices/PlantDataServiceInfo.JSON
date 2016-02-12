@@ -11,11 +11,23 @@
     "Units": [
       {
         "UnitID": 1,
-        "CeweID": 13312
+        "CeweID": 13312,
+        "XDM_PMinID": 787140,
+        "XDM_PMaxID": 787136,
+        "XDM_Unit": "UP_RIZZICONI_1",
+        "XDM_PMCurveType": "POT",
+        "XDM_PMinCurveSubType": "PMIN_M",
+        "XDM_PMaxCurveSubType": "PMAX_M"
       },
       {
         "UnitID": 2,
-        "CeweID": 13315
+        "CeweID": 13315,
+        "XDM_PMinID": 787141,
+        "XDM_PMaxID": 787137,
+        "XDM_Unit": "UP_RIZZICONI_2",
+        "XDM_PMCurveType": "POT",
+        "XDM_PMinCurveSubType": "PMIN_M",
+        "XDM_PMaxCurveSubType": "PMAX_M"
       }
     ]
   },
@@ -31,11 +43,20 @@
     "Units": [
       {
         "UnitID": 1,
-        "CeweID": 13319
+        "CeweID": 13319,
+        "XDM_Unit": "UP_SPARANISE_1",
+        "XDM_PMCurveType": "POT",
+        "XDM_PMinCurveSubType": "PMIN_M",
+        "XDM_PMaxCurveSubType": "PMAX_M"
       },
       {
         "UnitID": 2,
-        "CeweID": 13313
+        "CeweID": 13313,
+        "XDM_Unit": "UP_SPARANISE_2",
+        "XDM_PMCurveType": "POT",
+        "XDM_PMinCurveSubType": "PMIN_M",
+        "XDM_PMaxCurveSubType": "PMAX_M"
+
       }
     ]
   }
