@@ -1,4 +1,5 @@
-﻿using Oracle.ManagedDataAccess.Client;
+﻿using MathNet.Numerics;
+using Oracle.ManagedDataAccess.Client;
 using PlantLib;
 using PlantLib.Model;
 using PlantLib.PlantDataServices;
@@ -30,14 +31,34 @@ namespace PlantLibTest
             container.RegisterSingleton<IPlantRepository, PlantRepository>();
  
             container.RegisterSingleton<IPlantService, PlantService>();
+            container.RegisterSingleton<IPlantCalculationService, PlantCalculationService>();
 
-            var rep = container.GetInstance<IPlantService>();
 
+            //***********************************/
 
-            var riz = rep.GetPlant(Plants.Rizziconi);
+            var plantService = container.GetInstance<IPlantService>();
+            var calculationService = container.GetInstance<IPlantCalculationService>();
+             
+            var riz = plantService.GetPlant(Plants.Rizziconi);
 
-            var result = rep.GetUnitStatus(riz.Unit1);
+            calculationService.GasConsumptionRegression(riz,1, new UnitStates[] { UnitStates.running });
+            calculationService.GasConsumptionRegression(riz,2, new UnitStates[] { UnitStates.running });
 
+            var cale = plantService.GetPlant(Plants.Calenia);
+
+            calculationService.GasConsumptionRegression(cale,1, new UnitStates[] { UnitStates.running });
+            calculationService.GasConsumptionRegression(cale,2, new UnitStates[] { UnitStates.running });
+
+            var unitStatus = riz.Unit1.UnitHistoricalData;
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(@"C:\temp\UnitStatus.txt"))
+            {
+                   foreach (var item in unitStatus)
+                {
+                    file.WriteLine(string.Format("{0};{1};{2};{3};{4}", item.Measure.Date, item.Measure.Cewe, item.Measure.Pmin, item.Measure.Pmax, item.Status));
+                }
+
+            }
 
         }
     }

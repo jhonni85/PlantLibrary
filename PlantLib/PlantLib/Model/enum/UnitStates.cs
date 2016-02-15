@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace PlantLib.Model
 {
-    public enum PlantStatus
+    public enum UnitStates
     {
         off,
         ignitionRampHot,
         ignitionRampWorm,
-        ignitionRampCold
-        
+        ignitionRampCold,
+        shutdownRamp,
+        running,
+        ignitionTest,
+        techinicalMaintenace
+
     }
 }

@@ -11,7 +11,7 @@ namespace PlantLib.PlantDataServices.Model
         public DateTime D { get; set; }
         public float V { get; set; }
         public int H { get; set; }
-        public DateTime DQ { get; set; }
+        public DateTime DT { get; set; }
 
     }
 }

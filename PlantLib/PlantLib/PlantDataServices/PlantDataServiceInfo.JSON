@@ -12,6 +12,7 @@
       {
         "UnitID": 1,
         "CeweID": 13312,
+        "BurnedGasID": 9753,
         "XDM_PMinID": 787140,
         "XDM_PMaxID": 787136,
         "XDM_Unit": "UP_RIZZICONI_1",
@@ -22,6 +23,7 @@
       {
         "UnitID": 2,
         "CeweID": 13315,
+        "BurnedGasID": 9827,
         "XDM_PMinID": 787141,
         "XDM_PMaxID": 787137,
         "XDM_Unit": "UP_RIZZICONI_2",
@@ -44,6 +46,7 @@
       {
         "UnitID": 1,
         "CeweID": 13319,
+        "BurnedGasID": 9938,
         "XDM_Unit": "UP_SPARANISE_1",
         "XDM_PMCurveType": "POT",
         "XDM_PMinCurveSubType": "PMIN_M",
@@ -52,6 +55,7 @@
       {
         "UnitID": 2,
         "CeweID": 13313,
+        "BurnedGasID": 9855,
         "XDM_Unit": "UP_SPARANISE_2",
         "XDM_PMCurveType": "POT",
         "XDM_PMinCurveSubType": "PMIN_M",

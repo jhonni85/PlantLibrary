@@ -13,5 +13,6 @@ namespace PlantLib.Model
         public Unit Unit1 { get; set; }
         public Unit Unit2 { get; set; }
 
+        public IEnumerable<PlantHistoricalMeasure> PlantHistoricalData { get; set; }
     }
 }

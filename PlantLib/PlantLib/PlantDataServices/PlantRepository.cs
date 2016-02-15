@@ -39,7 +39,7 @@ namespace PlantLib.PlantDataServices
             return _plantInfo.Where(x => x.Name == Plant).Single();
         }
 
-        private IEnumerable<TimeSerie>  _getProfile(int ProfileID)
+        private IEnumerable<TimeSerie>  _getAvgProfile(int ProfileID)
         {
             using (var connection = new SqlConnection(_config.SqlConnectionString))
             {
@@ -50,7 +50,29 @@ namespace PlantLib.PlantDataServices
                              profile_date as D
                             ,ora H 
                             ,avg(valore) V 
-                            ,MIN(GiornoQ) as DQ
+                            ,MIN(GiornoQ) as DT
+                    FROM PREVGAS_QUARTER_PROFILES_DETAILS_PIVOTED
+                    where PROFILE_ID in  (@profileID)
+					group by profile_date,ora
+                    ORDER BY D,H ";
+
+                IEnumerable<TimeSerie> res = connection.Query<TimeSerie>(query, new { profileID = ProfileID });
+                return res;
+            }
+
+        }
+        private IEnumerable<TimeSerie> _getSumProfile(int ProfileID)
+        {
+            using (var connection = new SqlConnection(_config.SqlConnectionString))
+            {
+                connection.Open();
+
+                var query = @"
+                           Select  
+                             profile_date as D
+                            ,ora H 
+                            ,sum(valore) V 
+                            ,MIN(GiornoQ) as DT
                     FROM PREVGAS_QUARTER_PROFILES_DETAILS_PIVOTED
                     where PROFILE_ID in  (@profileID)
 					group by profile_date,ora
@@ -72,8 +94,8 @@ SELECT
  
 	INTERVAL_DATE AS D,
 	trunc(to_number((quarto-1)/4 +1)) AS H,
-	avg(to_number(Valore*-1)) AS V,
-    INTERVAL_DATE AS DQ
+	avg(to_number(Valore)) AS V,
+    INTERVAL_DATE AS DT
 FROM (
 
   SELECT 
@@ -100,15 +122,18 @@ FROM (
     SUM(VALUE_086) as value_086,SUM(VALUE_087) as value_087,SUM(VALUE_088) as value_088,SUM(VALUE_089) as value_089,SUM(VALUE_090) as value_090,
     SUM(VALUE_091) as value_091,SUM(VALUE_092) as value_092,SUM(VALUE_093) as value_093,SUM(VALUE_094) as value_094,SUM(VALUE_095) as value_095,
     SUM(VALUE_096) as value_096,SUM(VALUE_097) as value_097,SUM(VALUE_098) as value_098,SUM(VALUE_099) as value_099,SUM(VALUE_100) as value_100
-  FROM curve c inner join curve_interval_15 ci on c.id_curve=ci.id_curve
-  WHERE c.status ='A'       
-    AND c.deleted = 0
-
-    AND CURVE_TYPE= :CURVE_TYPE
-    AND unit= :UNIT_NAME
-    AND curve_subtype = :CURVE_SUBTYPE
-
-   GROUP BY UNIT,  CURVE_SUBTYPE,INTERVAL_DATE
+ FROM (
+select max(ci.ID_Curve) as ID_Curve ,ci.INTERVAL_DATE,c.unit,c.curve_subtype
+FROM curve   c
+inner join curve_interval_15 ci on c.id_curve=ci.id_curve
+where    1=1  AND CURVE_TYPE= :CURVE_TYPE
+    AND c.unit= :UNIT_NAME
+    AND c.curve_subtype =:CURVE_SUBTYPE
+    AND c.status ='A'       
+    AND c.deleted = 0 
+GROUP BY  INTERVAL_DATE,c.unit,c.curve_subtype
+) c inner join curve_interval_15 ci on c.id_curve=ci.id_curve AND ci.INTERVAL_DATE=c.INTERVAL_DATE
+ GROUP BY c.UNIT,  c.CURVE_SUBTYPE,ci.INTERVAL_DATE
 ) p
 unPIVOT ( Valore FOR Quarto IN (
  value_001 as '1',  value_002 as '2',  value_003 as '3',  value_004 as '4',  value_005 as '5', 
@@ -163,7 +188,7 @@ unPIVOT ( Valore FOR Quarto IN (
         {
             var info = GetConfig(Plant).Units.Where(x => x.UnitID == Unit).Single();
 
-            return _getProfile(info.CeweID);
+            return _getAvgProfile(info.CeweID);
 
         }
 
@@ -171,19 +196,44 @@ unPIVOT ( Valore FOR Quarto IN (
         public IEnumerable<TimeSerie> GetTemperature(Plants Plant)
         {
             var info = GetConfig(Plant);
-            return _getProfile(info.TemperatureID);
+            return _getAvgProfile(info.TemperatureID);
         }
 
         public IEnumerable<TimeSerie> GetPressure(Plants Plant)
         {
             var info = GetConfig(Plant);
-            return _getProfile(info.PressureID);
+            return _getAvgProfile(info.PressureID);
         }
 
         public IEnumerable<TimeSerie> GetHumdity(Plants Plant)
         {
             var info = GetConfig(Plant);
-            return _getProfile(info.HumidityID);
+            return _getAvgProfile(info.HumidityID);
+        }
+
+        public IEnumerable<TimeSerie> GetFisGasPrincipal(Plants Plant)
+        {
+            var info = GetConfig(Plant);
+            return _getSumProfile(info.FisGasPrincipalID);
+        }
+        public IEnumerable<TimeSerie> GetFisGasReserve(Plants Plant)
+        {
+            var info = GetConfig(Plant);
+            return _getSumProfile(info.FisGasReserveID);
+        }
+
+        public IEnumerable<TimeSerie> GetBurnedGas(Plants Plant, int Unit)
+        {
+
+            var info = GetConfig(Plant).Units.Where(x => x.UnitID == Unit).Single();
+
+            return _getSumProfile(info.BurnedGasID);
+        }
+
+        public IEnumerable<TimeSerie> GetPcs(Plants Plant)
+        {
+            var info = GetConfig(Plant);
+            return _getAvgProfile(info.PcsID);
         }
     }
        

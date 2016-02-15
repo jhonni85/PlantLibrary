@@ -10,9 +10,10 @@ namespace PlantLib
     public interface IPlantService
     {
         Plant GetPlant(Plants plant);
-        bool GetPlantStatus(Unit u);
 
-        bool GetUnitStatus(Unit u);
+        IEnumerable<UnitHistoricalMeasure> GetUnitHistoricalMeasure(Plants PlantName, int ModuleNumber);
+        IEnumerable<PlantHistoricalMeasure> GetPlantHistoricalMeasure(Plants PlantName);
+        IEnumerable<UnitHistoricalState> GetUnitStatus(Plants PlantName, int ModuleNumber);
 
     }
 }

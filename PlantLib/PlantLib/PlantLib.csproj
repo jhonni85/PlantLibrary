@@ -34,6 +34,10 @@
       <HintPath>..\packages\Dapper.1.42\lib\net45\Dapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MathNet.Numerics, Version=3.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.3.11.0\lib\net40\MathNet.Numerics.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -52,6 +56,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,15 +65,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPlantCalculationService.cs" />
+    <Compile Include="Model\RegressionParameters.cs" />
+    <Compile Include="PlantCalculationService.cs" />
     <Compile Include="IPlantService.cs" />
     <Compile Include="Model\Plant.cs" />
-    <Compile Include="Model\PlantHistoricalStatus.cs" />
-    <Compile Include="Model\ramp.cs" />
-    <Compile Include="Model\UnitStatus.cs" />
+    <Compile Include="Model\PlantHistoricalMeasure.cs" />
+    <Compile Include="Model\UnitHistoricalState.cs" />
+    <Compile Include="Model\UnitHistoricalMeasure.cs" />
+    <Compile Include="Model\enum\UnitStates.cs" />
+    <Compile Include="UnitStatusService.cs" />
     <Compile Include="PlantService.cs" />
     <Compile Include="Model\Unit.cs" />
     <Compile Include="PlantDataServices\PlantRepositoryStaticInfo.cs" />
-    <Compile Include="Model\Plants.cs" />
+    <Compile Include="Model\enum\Plants.cs" />
     <Compile Include="PlantDataServices\IPlantRepository.cs" />
     <Compile Include="PlantDataServices\Model\TimeSerie.cs" />
     <Compile Include="PlantDataServices\PlantRepository.cs" />

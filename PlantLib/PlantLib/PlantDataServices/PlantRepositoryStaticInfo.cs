@@ -27,7 +27,6 @@ namespace PlantLib.PlantDataServices
         public string XDM_PMCurveType { get; set; }
         public string XDM_PMinCurveSubType { get; set; }
         public string XDM_PMaxCurveSubType { get; set; }
-
-
+        public int BurnedGasID { get; set; }
     }
 }
