@@ -15,5 +15,6 @@ namespace PlantLib
         IEnumerable<PlantHistoricalMeasure> GetPlantHistoricalMeasure(Plants PlantName);
         IEnumerable<UnitHistoricalState> GetUnitStatus(Plants PlantName, int ModuleNumber);
 
+        RegressionParameters GasConsumptionRegression(Plant plant, int ModuleNumber, UnitStates[] s);
     }
 }

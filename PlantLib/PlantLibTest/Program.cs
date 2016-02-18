@@ -1,6 +1,7 @@
 ﻿using MathNet.Numerics;
 using Oracle.ManagedDataAccess.Client;
-using PlantLib;
+using PlantLib; 
+using PlantLib.ExcelServices;
 using PlantLib.Model;
 using PlantLib.PlantDataServices;
 using SimpleInjector;
@@ -18,47 +19,49 @@ namespace PlantLibTest
         static void Main(string[] args)
         {
 
-            var container = new Container();
-
-            PlantRepositoryConfig connectorCfg = new PlantRepositoryConfig()
-            {
-                SqlConnectionString = ConfigurationManager.AppSettings["PFX11Connection"],
-                OracleConnectionString = ConfigurationManager.AppSettings["XDM_MERCATI"],
-                JsonPlantStaticInfoPath = @"C:\workspace\PlantLibrary\PlantLib\PlantLib\PlantDataServices\PlantDataServiceInfo.JSON"
-            };
-
-            container.RegisterSingleton<PlantRepositoryConfig>(connectorCfg);
-            container.RegisterSingleton<IPlantRepository, PlantRepository>();
- 
-            container.RegisterSingleton<IPlantService, PlantService>();
-            container.RegisterSingleton<IPlantCalculationService, PlantCalculationService>();
-
-
+      
             //***********************************/
 
-            var plantService = container.GetInstance<IPlantService>();
-            var calculationService = container.GetInstance<IPlantCalculationService>();
+            var plantService = new PlantService();
+            var excel = new ExcelService();
+
+            var plant = plantService.GetPlant(Plants.Rizziconi);
+            excel.CreatePlantSheets(plant);
+
+            List<RegressionParameters> rp = new List<RegressionParameters>();
+
+            rp.Add(plantService.GasConsumptionRegression(plant, 1, new UnitStates[] { UnitStates.running }));
+            rp.Add(plantService.GasConsumptionRegression(plant, 1, new UnitStates[] { UnitStates.ignitionRampCold}));
+            rp.Add(plantService.GasConsumptionRegression(plant, 1, new UnitStates[] { UnitStates.ignitionRampHot }));
+            rp.Add(plantService.GasConsumptionRegression(plant, 1, new UnitStates[] { UnitStates.ignitionRampWorm }));
+            excel.WriteGasRegression(plant.Name, 1, rp);
+            rp.Clear();
+
+            rp.Add(plantService.GasConsumptionRegression(plant, 2, new UnitStates[] { UnitStates.running }));
+            rp.Add(plantService.GasConsumptionRegression(plant, 2, new UnitStates[] { UnitStates.ignitionRampCold }));
+            rp.Add(plantService.GasConsumptionRegression(plant, 2, new UnitStates[] { UnitStates.ignitionRampHot }));
+            rp.Add(plantService.GasConsumptionRegression(plant, 2, new UnitStates[] { UnitStates.ignitionRampWorm }));
+            excel.WriteGasRegression(plant.Name, 2, rp);
+            rp.Clear();
+            
+            plant = plantService.GetPlant(Plants.Calenia);
+            excel.CreatePlantSheets(plant);
+            rp.Add(plantService.GasConsumptionRegression(plant, 1, new UnitStates[] { UnitStates.running }));
+            rp.Add(plantService.GasConsumptionRegression(plant, 1, new UnitStates[] { UnitStates.ignitionRampCold }));
+            rp.Add(plantService.GasConsumptionRegression(plant, 1, new UnitStates[] { UnitStates.ignitionRampHot }));
+            rp.Add(plantService.GasConsumptionRegression(plant, 1, new UnitStates[] { UnitStates.ignitionRampWorm }));
+            excel.WriteGasRegression(plant.Name, 1, rp);
+            rp.Clear();
+
+            rp.Add(plantService.GasConsumptionRegression(plant, 2, new UnitStates[] { UnitStates.running }));
+            rp.Add(plantService.GasConsumptionRegression(plant, 2, new UnitStates[] { UnitStates.ignitionRampCold }));
+            rp.Add(plantService.GasConsumptionRegression(plant, 2, new UnitStates[] { UnitStates.ignitionRampHot }));
+            rp.Add(plantService.GasConsumptionRegression(plant, 2, new UnitStates[] { UnitStates.ignitionRampWorm }));
+            excel.WriteGasRegression(plant.Name, 2, rp);
+            rp.Clear();
              
-            var riz = plantService.GetPlant(Plants.Rizziconi);
 
-            calculationService.GasConsumptionRegression(riz,1, new UnitStates[] { UnitStates.running });
-            calculationService.GasConsumptionRegression(riz,2, new UnitStates[] { UnitStates.running });
-
-            var cale = plantService.GetPlant(Plants.Calenia);
-
-            calculationService.GasConsumptionRegression(cale,1, new UnitStates[] { UnitStates.running });
-            calculationService.GasConsumptionRegression(cale,2, new UnitStates[] { UnitStates.running });
-
-            var unitStatus = riz.Unit1.UnitHistoricalData;
-            using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(@"C:\temp\UnitStatus.txt"))
-            {
-                   foreach (var item in unitStatus)
-                {
-                    file.WriteLine(string.Format("{0};{1};{2};{3};{4}", item.Measure.Date, item.Measure.Cewe, item.Measure.Pmin, item.Measure.Pmax, item.Status));
-                }
-
-            }
+            excel.SaveWorkbook("C:\\temp\\test.xls");
 
         }
     }

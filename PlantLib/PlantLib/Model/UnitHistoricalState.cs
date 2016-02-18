@@ -18,7 +18,8 @@ namespace PlantLib.Model
         public UnitHistoricalMeasure Measure { get; set; }
         public UnitStates Status { get; set; }
 
-    
+        public bool OtherModuleRunning { get; set; }
+
     }
     
 

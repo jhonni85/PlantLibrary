@@ -13,6 +13,7 @@ namespace PlantLib.Model
         int IgnitionRampHours { get; set; }
         int ShutDownRampHours { get; set; }
 
+        int DataAnomalyHours { get; set; }
         int RunningHurs { get; set; }
         int Cewe { get; set; }
         UnitStates Status { get; set; }
@@ -26,6 +27,7 @@ namespace PlantLib.Model
             IgnitionRampHours = 0;
             ShutDownRampHours = 0;
             RunningHurs = 0;
+            DataAnomalyHours = 0;
             Status = UnitStates.off;
             history = new List<UnitHistoricalState>();
         }
@@ -36,7 +38,7 @@ namespace PlantLib.Model
         }
         public void ApplyNewData(UnitHistoricalMeasure measure)
         {
-
+ 
             // if plant is off 
             if (UnitStates.off == Status)
             {
@@ -55,7 +57,7 @@ namespace PlantLib.Model
                     OffHours = OffHours + 1;
                 }
             }
-            if (UnitStates.ignitionRampCold == Status || 
+            else if (UnitStates.ignitionRampCold == Status || 
                 UnitStates.ignitionRampHot == Status || 
                 UnitStates.ignitionRampWorm == Status)
             {
@@ -74,7 +76,7 @@ namespace PlantLib.Model
                     IgnitionRampHours = 0;
                 }
             }
-            if (UnitStates.running == Status)
+            else if (UnitStates.running == Status)
             { 
                 if (measure.Cewe >= measure.Pmin)
                 {
@@ -91,7 +93,7 @@ namespace PlantLib.Model
                     RunningHurs = 0;
                 }
             }
-            if (UnitStates.shutdownRamp == Status)
+            else if (UnitStates.shutdownRamp == Status)
             {
                 if (measure.Cewe > 0 && measure.Cewe < measure.Pmin)
                 {
@@ -108,7 +110,7 @@ namespace PlantLib.Model
                     ShutDownRampHours = 0 ;
                 }
             }
-            
+           
             history.Add(new UnitHistoricalState () { Measure = measure, Status = Status });
         }
         void _turnOff(UnitHistoricalMeasure measure)

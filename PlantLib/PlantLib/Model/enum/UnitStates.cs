@@ -15,7 +15,8 @@ namespace PlantLib.Model
         shutdownRamp,
         running,
         ignitionTest,
-        techinicalMaintenace
+        techinicalMaintenace,
+        dataAnomaly
 
     }
 }

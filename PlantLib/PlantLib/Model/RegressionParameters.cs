@@ -13,6 +13,9 @@ namespace PlantLib.Model
         public double Humidity { get; set; }
         public double Pressure { get; set; }
         public double Temperature { get; set; }
-
+        public IEnumerable<UnitStates> UnitState { get; set; } 
+        public Plants PlantName { get; set; }
+        public int ModuleNumber{ get; set; }
     }
+
 }

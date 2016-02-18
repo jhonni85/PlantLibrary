@@ -10,10 +10,10 @@ namespace PlantLib
 {
     public class PlantCalculationService : IPlantCalculationService
     {
-        public IPlantService _plantService { get; private set; }
-        public PlantCalculationService(IPlantService plantSer)
+    
+        public PlantCalculationService( )
         {
-            _plantService = plantSer;
+ 
         }
 
       
@@ -55,7 +55,7 @@ namespace PlantLib
                                  join y in impianto on x.Measure.Date equals y.Date
                                  select new double[] { x.Measure.Cewe, y.Humidity, y.Pressure, y.Temperature, x.Measure.BurnedGas }).ToArray();
 
-            return new RegressionParameters() { intercept = p[0], Cewe = p[1], Humidity = p[2], Pressure = p[3], Temperature = p[4] };
+            return new RegressionParameters() { intercept = p[0], Cewe = p[1], Humidity = p[2], Pressure = p[3], Temperature = p[4],UnitState = s ,PlantName = plant.Name,ModuleNumber= ModuleNumber};
         }
     }
 }

@@ -7,20 +7,51 @@ using PlantLib.Model;
 using PlantLib.PlantDataServices;
 using PlantLib.PlantDataServices.Model;
 using System.IO;
+using SimpleInjector;
+using PlantLib.ExcelServices;
+using System.Configuration;
 
 namespace PlantLib
 {
     public class PlantService : IPlantService
     {
         private IPlantRepository _plantRepo;
-
-  
-        public PlantService(IPlantRepository plantRepo)
+        private Container container;
+        private ExcelService _excel;
+        private IPlantCalculationService _plantCalculationService;
+        private void _setContainer( )
         {
-            _plantRepo = plantRepo;
- 
+            container = new Container();
+
+            PlantRepositoryConfig connectorCfg = new PlantRepositoryConfig()
+            {
+                SqlConnectionString = ConfigurationManager.AppSettings["PFX11Connection"],
+                OracleConnectionString = ConfigurationManager.AppSettings["XDM_MERCATI"],
+                JsonPlantStaticInfoPath = @"C:\workspace\PlantLibrary\PlantLib\PlantLib\PlantDataServices\PlantDataServiceInfo.JSON"
+            };
+
+            container.RegisterSingleton<PlantRepositoryConfig>(connectorCfg);
+            container.RegisterSingleton<IPlantRepository, PlantRepository>();
+
+            container.RegisterSingleton<IPlantService, PlantService>();
+            container.RegisterSingleton<IPlantCalculationService, PlantCalculationService>();
+            //***********************************/
+
+         
+            _plantCalculationService = container.GetInstance<IPlantCalculationService>();
+        }
+        public RegressionParameters GasConsumptionRegression(Plant plant, int ModuleNumber, UnitStates[] s)
+        {
+            return _plantCalculationService.GasConsumptionRegression(plant, ModuleNumber, s);
+        }
+        public PlantService( )
+        {
+            _setContainer();
+            _plantRepo = container.GetInstance<IPlantRepository>();
+            _excel = new ExcelService();
             
         }
+
 
         
         public Plant GetPlant(Plants plant)
@@ -40,10 +71,42 @@ namespace PlantLib
             p.Unit1.UnitHistoricalData = GetUnitStatus(p.Name, p.Unit1.ModuleNumber);
             p.PlantHistoricalData = GetPlantHistoricalMeasure(p.Name);
             p.Unit2.UnitHistoricalData = GetUnitStatus(p.Name, p.Unit2.ModuleNumber);
-
+            _setOtherModuleRunning(p);
             return p;
         }
+        private void _setOtherModuleRunning(Plant plant)
+        {
+            var cewes = from x in plant.Unit1.UnitHistoricalData
+                        join y in plant.Unit2.UnitHistoricalData on x.Measure.Date equals y.Measure.Date
+                        select new { x.Measure.Date, Cewe1 = x.Measure.Cewe, Cewe2 = y.Measure.Cewe };
 
+            plant.Unit1.UnitHistoricalData.ToList().ForEach(x => x.OtherModuleRunning = false);
+            plant.Unit2.UnitHistoricalData.ToList().ForEach(x => x.OtherModuleRunning = false);
+
+            foreach (var item  in cewes)
+            {
+                if(item.Cewe1> 0 && item.Cewe2>0)
+                {
+                    var unitstatus = plant.Unit1.UnitHistoricalData.Where(x => x.Measure.Date == item.Date).SingleOrDefault();
+                    unitstatus.OtherModuleRunning = true;
+                     unitstatus = plant.Unit2.UnitHistoricalData.Where(x => x.Measure.Date == item.Date).SingleOrDefault();
+                    unitstatus.OtherModuleRunning = true;
+                }
+                else if ( item.Cewe2 > 0)
+                {
+                    var unitstatus = plant.Unit1.UnitHistoricalData.Where(x => x.Measure.Date == item.Date).SingleOrDefault();
+                    unitstatus.OtherModuleRunning = true;
+ 
+                }
+                else if (item.Cewe1 > 0)
+                {
+                    var unitstatus = plant.Unit2.UnitHistoricalData.Where(x => x.Measure.Date == item.Date).SingleOrDefault();
+                    unitstatus.OtherModuleRunning = true;
+
+                }
+
+            }
+        }
         public IEnumerable<UnitHistoricalMeasure> GetUnitHistoricalMeasure(Plants PlantName  , int ModuleNumber)
         {
             var cewe = _plantRepo.GetCewe(PlantName, ModuleNumber);
