@@ -12,18 +12,12 @@ namespace PlantLib.ExcelServices
     public class ExcelService
     {
         HSSFWorkbook wb;
+      
         public ExcelService()
         {
-            _loadTemplateWorkbook(@".\ExcelServices\Template\Previsione Gas Centrali.xls");
-        }
-        private HSSFWorkbook _loadTemplateWorkbook(string path)
-        {
        
-            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
-            {
-                wb = new HSSFWorkbook(fs);
-            }
-            return wb;
+               wb = new HSSFWorkbook();
+ 
         }
         public void WriteGasRegression(Plants PlantName,int ModuleNumber ,IEnumerable<RegressionParameters> RP)
         {
@@ -167,11 +161,11 @@ namespace PlantLib.ExcelServices
  
   
 
-            var sh1=wb.GetSheet(p.Name + "_"+ p.Unit1.ModuleNumber);
+            var sh1=wb.CreateSheet(p.Name + "_"+ p.Unit1.ModuleNumber);
             _fillsheetWithUnitValue(p,p.Unit1, sh1);
 
      
-            var sh2 = wb.GetSheet(p.Name + "_" + p.Unit2.ModuleNumber);
+            var sh2 = wb.CreateSheet(p.Name + "_" + p.Unit2.ModuleNumber);
             _fillsheetWithUnitValue(p,p.Unit2, sh2);
  
         }

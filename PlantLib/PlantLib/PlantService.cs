@@ -27,7 +27,7 @@ namespace PlantLib
             {
                 SqlConnectionString = ConfigurationManager.AppSettings["PFX11Connection"],
                 OracleConnectionString = ConfigurationManager.AppSettings["XDM_MERCATI"],
-                JsonPlantStaticInfoPath = @"C:\workspace\PlantLibrary\PlantLib\PlantLib\PlantDataServices\PlantDataServiceInfo.JSON"
+                JsonPlantStaticInfoPath = @".\PlantDataServices\PlantDataServiceInfo.JSON"
             };
 
             container.RegisterSingleton<PlantRepositoryConfig>(connectorCfg);

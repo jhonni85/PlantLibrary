@@ -109,11 +109,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ExcelServices\Template\Previsione Gas Centrali.xls">
+    <None Include="packages.config" />
+    <None Include="PlantDataServices\PlantDataServiceInfo.JSON">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
-    <None Include="PlantDataServices\PlantDataServiceInfo.JSON" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
